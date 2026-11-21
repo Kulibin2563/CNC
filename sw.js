@@ -1,22 +1,33 @@
-var CACHE='cnc-calc-v1';
+
+var CACHE='cnc-calc-v3';
 var FILES=['./','index.html','manifest.json','apple-touch-icon.png','icon-512.png'];
+
 self.addEventListener('install',function(e){
-  e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(FILES)}));
+  e.waitUntil(caches.open(CACHE).then(function(c){
+    return Promise.all(FILES.map(function(f){return c.add(f).catch(function(){})}));
+  }));
   self.skipWaiting();
 });
+
 self.addEventListener('activate',function(e){
   e.waitUntil(caches.keys().then(function(ks){
     return Promise.all(ks.filter(function(k){return k!==CACHE}).map(function(k){return caches.delete(k)}));
-  }));
-  self.clients.claim();
+  }).then(function(){return self.clients.claim()}));
 });
+
+// Сначала кэш (мгновенно и без сети), обновление в фоне
 self.addEventListener('fetch',function(e){
-  if(e.request.method!=='GET')return;
-  e.respondWith(
-    fetch(e.request).then(function(r){
-      var copy=r.clone();
-      caches.open(CACHE).then(function(c){c.put(e.request,copy)});
-      return r;
-    }).catch(function(){return caches.match(e.request).then(function(m){return m||caches.match('index.html')})})
-  );
+  var r=e.request;
+  if(r.method!=='GET')return;
+  if(new URL(r.url).origin!==location.origin)return;
+  e.respondWith(caches.match(r,{ignoreSearch:true}).then(function(m){
+    var net=fetch(r).then(function(resp){
+      if(resp&&resp.ok){var copy=resp.clone();caches.open(CACHE).then(function(c){c.put(r,copy)})}
+      return resp;
+    });
+    if(m){net.catch(function(){});return m}
+    return net.catch(function(){
+      return caches.match('index.html').then(function(x){return x||caches.match('./')});
+    });
+  }));
 });
