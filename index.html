@@ -44,19 +44,19 @@ h2{font-size:14px;color:var(--mu);margin:0 0 8px;font-weight:600}
   <label style="margin-top:0">Тип</label>
   <div class="seg"><button id="bo" class="on">Наружная</button><button id="bi">Внутренняя</button></div>
   <div class="row">
-    <div><label>Диаметр, мм</label><input id="d" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="50"></div>
+    <div><label>Диаметр, мм</label><input id="d" type="number" step="any" inputmode="decimal" value="50"></div>
     <div><label>Радиус пластины R</label><select id="r"><option>0.4</option><option>0.8</option><option>1.2</option></select></div>
   </div>
   <div class="row">
-    <div><label>Начальная Z</label><input id="z0" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="0"></div>
-    <div><label>Безопасное Z от начала</label><input id="sd" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="2"></div>
+    <div><label>Начальная Z</label><input id="z0" type="number" step="any" inputmode="decimal" value="0"></div>
+    <div><label>Безопасное Z от начала</label><input id="sd" type="number" step="any" inputmode="decimal" value="2"></div>
   </div>
   <div id="fc" class="row">
-    <div><label>Размер фаски, мм</label><input id="c" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="1"></div>
-    <div><label>Угол фаски, °</label><input id="a" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="45"></div>
+    <div><label>Размер фаски, мм</label><input id="c" type="number" step="any" inputmode="decimal" value="1"></div>
+    <div><label>Угол фаски, °</label><input id="a" type="number" step="any" inputmode="decimal" value="45"></div>
   </div>
   <div id="fr" class="row hid">
-    <div><label>Радиус скругления R, мм</label><input id="rr" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" value="3"></div>
+    <div><label>Радиус скругления R, мм</label><input id="rr" type="number" step="any" inputmode="decimal" value="3"></div>
     <div><label>Направление дуги</label><select id="dir"><option value="auto">Авто</option><option value="G02">G02</option><option value="G03">G03</option></select></div>
   </div>
 </div>
